@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import StyledComponentsProvider from "@/providers/StyledComponentsProvider";
+import "devextreme/dist/css/dx.light.css";
+import { ReactNode } from "react";
+import * as S from "./styles";
+import Sidebar from "@/components/Sidebar";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,11 +17,21 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} dx-viewport`}>
+        <StyledComponentsProvider>
+          <S.Layout>
+            <Navbar />
+            <S.RowContainer>
+              <Sidebar />
+              {children}
+            </S.RowContainer>
+          </S.Layout>
+        </StyledComponentsProvider>
+      </body>
     </html>
   );
 }
