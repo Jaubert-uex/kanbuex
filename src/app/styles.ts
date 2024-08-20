@@ -1,7 +1,12 @@
 "use client";
 import styled from "styled-components";
 
-export const Page = styled.div``;
+export const Page = styled.div`
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 
 export const Layout = styled.div`
   height: 100vh;
@@ -13,4 +18,10 @@ export const Layout = styled.div`
 
 export const RowContainer = styled.div`
   flex: 1;
+`;
+
+export const ChartContainer = styled.div`
+  background-color: hsl(240, 7%, 23%);
+  border-radius: 20px;
+  padding: 20px 100px;
 `;
