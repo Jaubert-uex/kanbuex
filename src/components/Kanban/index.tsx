@@ -7,6 +7,8 @@ import {
     tasks as taskList, employees, Employee, Task,
 } from './data';
 import './style.css';
+import {motion} from 'framer-motion';
+import {Check, Plus} from "@phosphor-icons/react";
 
 function getLists(statusArray: string[], taskArray: Task[]) {
     const tasksMap = taskArray.reduce((result: { [x: string]: any[]; }, task: { Task_Status: string | number; }) => {
@@ -86,6 +88,8 @@ const List: React.FC<{ title: any, index: any, tasks: any, employeesMap: any, on
 function Kanban() {
     const [statuses, setStatuses] = useState(taskStatuses);
     const [lists, setLists] = useState(getLists(taskStatuses, taskList));
+    const [newColumn, setNewColumn] = useState(false);
+    const [inputValue, setInputValue] = useState('');
 
     const onListReorder = useCallback(({fromIndex, toIndex}: { fromIndex: any, toIndex: any }) => {
         setLists((state) => reorderItem(state, fromIndex, toIndex));
@@ -109,7 +113,51 @@ function Kanban() {
     );
 
     return (
-        <div id="kanban" style={{paddingRight: '2rem'}}>
+        <>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10
+            }}>
+            {newColumn && <motion.input style={{
+                backgroundColor: 'transparent',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.5rem',
+                color: 'white',
+                border: '1px solid white',
+                marginLeft: 10,
+            }} placeholder='Nome da coluna' onChange={(v) => setInputValue(v.target.value)} />}
+            <motion.button onClick={() => {
+                if (!newColumn) {
+                    setNewColumn(true);
+                    return;
+                }
+
+                if (newColumn && inputValue) {
+                    setStatuses([...statuses, inputValue]);
+                    setLists([...lists, []]);
+                    setNewColumn(false);
+                    setInputValue('');
+                }
+
+            }} whileHover={{
+                scale: 1.02,
+            }} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                backgroundColor: 'transparent',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.5rem',
+                cursor: 'pointer',
+                color: 'white',
+                border: '1px solid white',
+            }}>
+                {newColumn ? 'Adicionar' : 'Nova coluna'}
+                {newColumn ? <Check size={20} /> : <Plus size={20} />}
+            </motion.button>
+            </div>
+    <div id="kanban" style={{paddingRight: '2rem'}}>
             <ScrollView
                 className="scrollable-board"
                 direction="horizontal"
@@ -134,6 +182,8 @@ function Kanban() {
                 </Sortable>
             </ScrollView>
         </div>
+        </>
+
     );
 }
 
