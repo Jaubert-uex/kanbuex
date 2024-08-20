@@ -4,7 +4,7 @@ import * as S from "./styles";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import { ChartPie, GridFour, SignOut } from "@phosphor-icons/react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const LINKS = [
   {
@@ -29,6 +29,7 @@ const Sidebar = () => {
       </S.LogoContainer>
       {LINKS.map(({ icon, label, href }) => (
         <S.Link
+          key={label}
           href={href}
           animate={{
             backgroundColor:
