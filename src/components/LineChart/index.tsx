@@ -13,7 +13,7 @@ import {
 } from "devextreme-react/chart";
 import React from "react";
 
-import service from "./lineData";
+import service from "./data";
 
 const countriesInfo = service.getCountriesInfo();
 const energySources = service.getEnergySources();

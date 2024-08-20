@@ -21,21 +21,24 @@ const LINKS = [
 const Sidebar = () => {
   const path = usePathname();
 
+  function linkHighlight(active: boolean) {
+    return {
+      animate: {
+        backgroundColor: active
+          ? "hsl(240, 7%, 23%, 1)"
+          : "hsl(240, 7%, 23%, 0)",
+        color: active ? "hsl(0, 0%, 100%)" : "hsl(0, 0%, 60%)",
+      },
+    };
+  }
+
   return (
     <S.Container>
       <S.LogoContainer>
         <Logo />
       </S.LogoContainer>
       {LINKS.map(({ icon, label, href }) => (
-        <S.Link
-          key={label}
-          href={href}
-          animate={{
-            backgroundColor:
-              path === href ? "hsl(240, 7%, 23%, 1)" : "hsl(240, 7%, 23%, 0)",
-            color: path === href ? "hsl(0, 0%, 100%)" : "hsl(0, 0%, 60%)",
-          }}
-        >
+        <S.Link key={label} href={href} {...linkHighlight(href === path)}>
           {icon}
           <S.LinkText>{label}</S.LinkText>
         </S.Link>
@@ -44,6 +47,7 @@ const Sidebar = () => {
         href={"/login"}
         style={{
           marginTop: "auto",
+          color: "hsl(0, 0%, 60%)",
         }}
       >
         <SignOut

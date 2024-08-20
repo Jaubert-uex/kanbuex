@@ -2,7 +2,7 @@
 import styled from "styled-components";
 
 export const Page = styled.div`
-  padding-right: 10px;
+  padding: 10px 10px 10px 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -18,6 +18,7 @@ export const Layout = styled.div`
 
 export const RowContainer = styled.div`
   flex: 1;
+  overflow: auto;
 `;
 
 export const ChartContainer = styled.div`
