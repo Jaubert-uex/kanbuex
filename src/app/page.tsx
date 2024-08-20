@@ -3,5 +3,5 @@
 import * as S from "./styles";
 
 export default function Home() {
-  return <S.Page></S.Page>;
+  return <S.Page>Graficos</S.Page>;
 }

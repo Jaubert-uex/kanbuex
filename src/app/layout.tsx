@@ -24,9 +24,9 @@ export default function RootLayout({
       <body className={`${inter.className} dx-viewport`}>
         <StyledComponentsProvider>
           <S.Layout>
-            <Navbar />
+            <Sidebar />
             <S.RowContainer>
-              <Sidebar />
+              <Navbar />
               {children}
             </S.RowContainer>
           </S.Layout>
