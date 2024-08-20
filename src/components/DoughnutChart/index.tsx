@@ -5,6 +5,8 @@ import PieChart, {
   Format,
   Label,
   Connector,
+    Export,
+    Title
 } from "devextreme-react/pie-chart";
 
 import { populationByRegions } from "./data";
@@ -18,9 +20,12 @@ function customizeTooltip(arg: { valueText: string; percent: number }) {
 export default function DoughnutChart() {
   return (
     <PieChart
+        style={{
+          color: "white",
+        }}
       id="pie"
       type="doughnut"
-      title="The Population of Continents and Regions"
+      // title="The Population of Continents and Regions"
       palette="Soft Pastel"
       dataSource={populationByRegions}
     >
@@ -30,9 +35,13 @@ export default function DoughnutChart() {
         </Label>
       </Series>
       <Legend margin={0} horizontalAlignment="right" verticalAlignment="top" />
+      <Export enabled={true} />
       <Tooltip enabled={true} customizeTooltip={customizeTooltip}>
         <Format type="millions" />
       </Tooltip>
+      <Title text='The Population of Continents and Regions' font={{
+        color: "white",
+      }}/>
     </PieChart>
   );
 }

@@ -1,4 +1,4 @@
-import * as S from "./styles";
+
 import {
   ArgumentAxis,
   Chart,
@@ -10,6 +10,7 @@ import {
   Subtitle,
   Title,
   Tooltip,
+    Export
 } from "devextreme-react/chart";
 import React from "react";
 
@@ -37,6 +38,7 @@ export default function LineChart() {
         horizontalAlignment="center"
         itemTextPosition="bottom"
       />
+        <Export enabled={true} />
       <Title
         text="Energy Consumption in 2004"
         font={{
