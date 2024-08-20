@@ -1,7 +1,6 @@
 "use client";
 
 import * as S from "./styles";
-import Link from "next/link";
 import Logo from "@/components/Logo";
 import { ChartPie, GridFour, SignOut } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
