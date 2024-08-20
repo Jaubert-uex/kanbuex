@@ -15,7 +15,6 @@ export interface Task {
     Task_Completion: number,
     Task_Parent_ID: number,
 }
-
 export const tasks: Task[] = [{
     Task_ID: 1,
     Task_Assigned_Employee_ID: 1,
@@ -62,14 +61,14 @@ export const tasks: Task[] = [{
     Task_Parent_ID: 0,
 }, {
     Task_ID: 5,
-    Task_Assigned_Employee_ID: 5,
-    Task_Owner_ID: 5,
-    Task_Subject: 'NDA',
-    Task_Start_Date: '2015-03-12T00:00:00',
-    Task_Due_Date: '2015-05-01T00:00:00',
+    Task_Assigned_Employee_ID: 31,
+    Task_Owner_ID: 33,
+    Task_Subject: 'Training',
+    Task_Start_Date: '2015-03-02T00:00:00',
+    Task_Due_Date: '2015-06-29T00:00:00',
     Task_Status: 'Concluído',
     Task_Priority: 3,
-    Task_Completion: 90,
+    Task_Completion: 100,
     Task_Parent_ID: 0,
 }];
 

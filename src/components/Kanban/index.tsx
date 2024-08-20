@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import ScrollView from 'devextreme-react/scroll-view';
 import Sortable from 'devextreme-react/sortable';
 import {
@@ -22,7 +22,7 @@ function getLists(statusArray: string[], taskArray: Task[]) {
 }
 
 function getEmployeesMap(employeesArray: Employee[]): Record<string, string> {
-    return employeesArray.reduce((result, employee) => {
+    return employeesArray.reduce((result: any, employee) => {
         result[employee.ID] = employee.Name;
         return result;
     }, {});
@@ -32,7 +32,7 @@ function removeItem(array: any[], removeIdx: number) {
     return array.filter((_, idx) => idx !== removeIdx);
 }
 
-function insertItem(array: any[], item, insertIdx: number) {
+function insertItem(array: any[], item: any, insertIdx: number) {
     const newArray = [...array];
     newArray.splice(insertIdx, 0, item);
     return newArray;
@@ -44,7 +44,7 @@ function reorderItem(array: any[], fromIdx: number, toIdx: number) {
     return insertItem(result, item, toIdx);
 }
 
-const taskStatuses = ['Not Started', 'Need Assistance', 'In Progress', 'Deferred', 'Completed'];
+const taskStatuses = ['Lead', 'Contato Feito', 'Aguardando definição', 'Proposta enviada', 'Concluído'];
 const employeesRecord = getEmployeesMap(employees);
 
 const Card: React.FC<{ task: Task, employeesMap: Record<string, string> }> = ({
@@ -55,9 +55,14 @@ const Card: React.FC<{ task: Task, employeesMap: Record<string, string> }> = ({
     <div className="card-assignee">{employeesMap[task.Task_Assigned_Employee_ID]}</div>
 </div>;
 
-const List: React.FC<{ title, index, tasks, employeesMap, onTaskDrop }> = ({
-                                                                               title, index, tasks, employeesMap, onTaskDrop,
-                                                                           }) => <div className="list">
+const List: React.FC<{ title: any, index: any, tasks: any, employeesMap: any, onTaskDrop: any }> = ({
+                                                                                                        title,
+                                                                                                        index,
+                                                                                                        tasks,
+                                                                                                        employeesMap,
+                                                                                                        onTaskDrop,
+                                                                                                    }) => <div
+    className="list">
     <div className="list-title">{title}</div>
     <ScrollView
         className="scrollable-list"
@@ -69,7 +74,7 @@ const List: React.FC<{ title, index, tasks, employeesMap, onTaskDrop }> = ({
             data={index}
             onReorder={onTaskDrop}
             onAdd={onTaskDrop}>
-            {tasks.map((task) => <Card
+            {tasks.map((task: any) => <Card
                 key={task.Task_ID}
                 task={task}
                 employeesMap={employeesMap}>
@@ -82,7 +87,7 @@ function Kanban() {
     const [statuses, setStatuses] = useState(taskStatuses);
     const [lists, setLists] = useState(getLists(taskStatuses, taskList));
 
-    const onListReorder = useCallback(({ fromIndex, toIndex }) => {
+    const onListReorder = useCallback(({fromIndex, toIndex}: { fromIndex: any, toIndex: any }) => {
         setLists((state) => reorderItem(state, fromIndex, toIndex));
         setStatuses((state) => reorderItem(state, fromIndex, toIndex));
     }, []);
@@ -90,7 +95,8 @@ function Kanban() {
     const onTaskDrop = useCallback(
         ({
              fromData, toData, fromIndex, toIndex,
-         }) => {
+         }: { fromData: any, toData: any, fromIndex: any, toIndex: any },
+        ) => {
             const updatedLists = [...lists];
 
             const item = updatedLists[fromData][fromIndex];
@@ -103,18 +109,18 @@ function Kanban() {
     );
 
     return (
-        <div id="kanban">
+        <div id="kanban" style={{paddingRight: '2rem'}}>
             <ScrollView
                 className="scrollable-board"
                 direction="horizontal"
                 showScrollbar="always"
-                >
+            >
                 <Sortable
                     className="sortable-lists"
                     itemOrientation="horizontal"
                     handle=".list-title"
                     onReorder={onListReorder}>
-                    {lists.map((tasks, listIndex: string | number) => {
+                    {lists.map((tasks, listIndex: number) => {
                         const status = statuses[listIndex];
                         return <List
                             key={status}
