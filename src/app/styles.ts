@@ -1,9 +1,7 @@
 "use client";
 import styled from "styled-components";
 
-export const Page = styled.div`
-  background-color: #f0f0f0;
-`;
+export const Page = styled.div``;
 
 export const Layout = styled.div`
   height: 100vh;
