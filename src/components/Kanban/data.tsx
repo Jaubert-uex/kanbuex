@@ -1,3 +1,5 @@
+import {useState} from "react";
+
 export interface Employee {
     ID: number,
     Name: string,
@@ -16,7 +18,7 @@ export interface Task {
     Task_Parent_ID: number,
 }
 
-export const tasks: Task[] = [{
+const tasksData: Task[] = [{
     Task_ID: 1,
     Task_Assigned_Employee_ID: 1,
     Task_Owner_ID: 1,
@@ -72,6 +74,35 @@ export const tasks: Task[] = [{
     Task_Completion: 90,
     Task_Parent_ID: 0,
 }];
+
+export function useTasks() {
+
+    const taskStatuses = ['Lead', 'Contato Feito', 'Aguardando definição', 'Proposta enviada', 'Concluído'];
+
+
+    function getLists(statusArray: string[], taskArray: Task[]) {
+        const tasksMap = taskArray.reduce((result: { [x: string]: any[]; }, task: {
+            Task_Status: string | number;
+        }) => {
+            if (result[task.Task_Status]) {
+                result[task.Task_Status].push(task);
+            } else {
+                result[task.Task_Status] = [task];
+            }
+
+            return result;
+        }, {});
+        return statusArray.map((status: string | number) => tasksMap[status]);
+    }
+
+    const [lists, setLists] = useState(getLists(taskStatuses, tasksData));
+
+    return {
+        lists,
+        setLists
+    }
+
+}
 
 export const employees: Employee[] = [{
     ID: 1,
