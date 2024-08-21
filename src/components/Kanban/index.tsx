@@ -1,12 +1,12 @@
 "use client"
 
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import ScrollView from 'devextreme-react/scroll-view';
 import Sortable from 'devextreme-react/sortable';
-import {Employee, employees, Task, useTasks,} from './data';
+import { Employee, employees, Task, useTasks, } from './data';
 import './style.css';
-import {motion} from 'framer-motion';
-import {Check, Plus} from "@phosphor-icons/react";
+import { motion } from 'framer-motion';
+import { Check, Plus } from "@phosphor-icons/react";
 
 
 function getEmployeesMap(employeesArray: Employee[]): Record<string, string> {
@@ -35,12 +35,12 @@ function reorderItem(array: any[], fromIdx: number, toIdx: number) {
 const employeesRecord = getEmployeesMap(employees);
 
 const Card: React.FC<{ task: Task, employeesMap: Record<string, string> }> = ({
-                                                                                  task, employeesMap,
-                                                                              }) => <div className="card dx-card">
-    <div className={`card-priority priority-${task.Task_Priority}`}></div>
-    <div className="card-subject">{task.Task_Subject}</div>
-    <div className="card-assignee">{employeesMap[task.Task_Assigned_Employee_ID]}</div>
-</div>;
+    task, employeesMap,
+}) => <div className="card dx-card">
+        <div className={`card-priority priority-${task.Task_Priority}`}></div>
+        <div className="card-subject">{task.Task_Subject}</div>
+        <div className="card-assignee">{employeesMap[task.Task_Assigned_Employee_ID]}</div>
+    </div>;
 
 const List: React.FC<{
     title: any,
@@ -51,87 +51,97 @@ const List: React.FC<{
     lists: any,
     setLists: any
 }> = ({
-          title,
-          index,
-          tasks,
-          lists,
-          setLists,
-          employeesMap,
-          onTaskDrop,
-      }) => {
+    title,
+    index,
+    tasks,
+    lists,
+    setLists,
+    employeesMap,
+    onTaskDrop,
+}) => {
 
-    function add(qualqeuto: Task[]) {
-        return () => {
-            const elementValue: any = document.getElementById('input-card')?.value;
-            const aux = lists;
+        function add(qualqeuto: Task[]) {
+            return () => {
+                const elementValue: any = document.getElementById('input-card' + qualqeuto[0].Task_ID)?.value;
+                let position = 0
 
-            lists.forEach((list: any, index: number) => {
+                lists.forEach((list: any, index: number) => {
 
-                const target = list.findIndex((task: any) => task.Task_Status === qualqeuto[0].Task_Status)
-                if (target === -1) {
-                    return;
+                    const foundIndex = list.findIndex((task: any) => task.Task_Status === qualqeuto[0].Task_Status)
+                    if (foundIndex === -1) {
+                        return;
+                    }
+
+                    position = index;
+                })
+                const ans: Task = {
+                    Task_ID: Math.random(),
+                    Task_Assigned_Employee_ID: 1,
+                    Task_Owner_ID: 1,
+                    Task_Subject: elementValue,
+                    Task_Start_Date: '2015-01-01T00:00:00',
+                    Task_Due_Date: '2015-04-01T00:00:00',
+                    Task_Status: qualqeuto[0].Task_Status,
+                    Task_Priority: 4,
+                    Task_Completion: 100,
+                    Task_Parent_ID: 0,
                 }
-                aux[target] = [...aux[target], qualqeuto[0]]
-            })
-            setLists(aux);
+                lists[position].push(ans)
+                setLists([...lists]);
+            }
         }
-    }
 
-    return <div
-        className="list">
-        <div className="list-title">{title}</div>
-        <ScrollView
-            className="scrollable-list"
-            direction="vertical"
-            showScrollbar="always">
-            <Sortable
-                className="sortable-cards"
-                group="cardsGroup"
-                data={index}
-                onReorder={onTaskDrop}
-                onAdd={onTaskDrop}>
-                {tasks.map((task: any) => <Card
-                    key={task.Task_ID}
-                    task={task}
-                    employeesMap={employeesMap}>
-                </Card>)}
-                <div style={{
-                    width: '100%',
-                    backgroundColor: '#333',
-                    display: "flex",
-                    alignItems: 'center',
-                    justifyContent: "space-between"
-                }}
-                     onClick={add(tasks)}>
-                    <input placeholder='Adicionar card' id='input-card'/>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px"
-                         viewBox="0 -960 960 960"
-                         width="24px"
-                         fill="#e8eaed">
-                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
-                    </svg>
-                </div>
-            </Sortable>
-        </ScrollView>
-    </div>;
-}
+        return <div
+            className="list">
+            <div className="list-title">{title}</div>
+            <ScrollView
+                className="scrollable-list"
+                direction="vertical"
+                showScrollbar="always">
+                <Sortable
+                    className="sortable-cards"
+                    group="cardsGroup"
+                    data={index}
+                    onReorder={onTaskDrop}
+                    onAdd={onTaskDrop}>
+                    {tasks.map((task: any, index: number) => <Card
+                        key={index}
+                        task={task}
+                        employeesMap={employeesMap}>
+                    </Card>)}
+                    <div style={{ width: '95%', borderRadius: '5px', margin: 'auto', backgroundColor: '#333', display: "flex", alignItems: 'center', justifyContent: "space-between" }}
+                    >
+                        <input style={{padding: '10px', borderRadius: '5px', outline: 'none'}} placeholder='Adicionar card' id={'input-card' + tasks[0]?.Task_ID} />
+                        <div onClick={add(tasks)} style={{ width: '100%', background: '#333', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                viewBox="0 -960 960 960"
+                                width="24px"
+                                fill="#e8eaed">
+                                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                            </svg>
+                        </div>
+                    </div>
+                </Sortable>
+            </ScrollView>
+        </div>;
+    }
 
 function Kanban() {
     const taskStatuses = ['Lead', 'Contato Feito', 'Aguardando definição', 'Proposta enviada', 'Concluído'];
-    const {lists, setLists} = useTasks();
+    const { lists, setLists } = useTasks();
     const [statuses, setStatuses] = useState(taskStatuses);
     const [newColumn, setNewColumn] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
-    const onListReorder = useCallback(({fromIndex, toIndex}: { fromIndex: any, toIndex: any }) => {
+    const onListReorder = useCallback(({ fromIndex, toIndex }: { fromIndex: any, toIndex: any }) => {
         setLists((state) => reorderItem(state, fromIndex, toIndex));
         setStatuses((state) => reorderItem(state, fromIndex, toIndex));
-    }, []);
+    }, [lists]);
 
     const onTaskDrop = useCallback(
         ({
-             fromData, toData, fromIndex, toIndex,
-         }: { fromData: any, toData: any, fromIndex: any, toIndex: any },
+            fromData, toData, fromIndex, toIndex,
+        }: { fromData: any, toData: any, fromIndex: any, toIndex: any },
         ) => {
             const updatedLists = [...lists];
             const item = updatedLists[fromData][fromIndex];
@@ -160,7 +170,7 @@ function Kanban() {
                     color: 'white',
                     border: '1px solid white',
                     marginLeft: 10,
-                }} placeholder='Nome da coluna' onChange={(v) => setInputValue(v.target.value)}/>}
+                }} placeholder='Nome da coluna' onChange={(v) => setInputValue(v.target.value)} />}
                 <motion.button onClick={() => {
                     if (!newColumn) {
                         setNewColumn(true);
@@ -188,10 +198,10 @@ function Kanban() {
                     border: '1px solid white',
                 }}>
                     {newColumn ? 'Adicionar' : 'Nova coluna'}
-                    {newColumn ? <Check size={20}/> : <Plus size={20}/>}
+                    {newColumn ? <Check size={20} /> : <Plus size={20} />}
                 </motion.button>
             </div>
-            <div id="kanban" style={{paddingRight: '2rem'}}>
+            <div id="kanban" style={{ paddingRight: '2rem' }}>
                 <ScrollView
                     className="scrollable-board"
                     direction="horizontal"
@@ -207,12 +217,13 @@ function Kanban() {
                             return <List
                                 lists={lists}
                                 setLists={setLists}
-                                key={status}
+                                onTaskDrop={onTaskDrop}
+                                key={listIndex}
                                 title={status}
                                 index={listIndex}
                                 tasks={tasks}
                                 employeesMap={employeesRecord}
-                                onTaskDrop={onTaskDrop}>
+                            >
                             </List>;
                         })}
                     </Sortable>
@@ -224,3 +235,6 @@ function Kanban() {
 }
 
 export default Kanban;
+
+
+{/* <div style={{ width: '95%', borderRadius: '5px', margin: 'auto', backgroundColor: '#333', display: "flex", alignItems: 'center', justifyContent: "space-between" }} > <input onKeyDown={(event => event.key === 'Enter' && add(tasks))} style={{ borderRadius: '5px', padding: '5px 5px', outline: 'none' }} placeholder='Adicionar card' id={'input-card' + tasks[0]?.Task_ID} /> <div onClick={add(tasks)} style={{ width: '100%', cursor: 'pointer', background: '#333', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"> <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" /> </svg> </div> </div> */ }
